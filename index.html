@@ -45,82 +45,220 @@ strong{color:var(--ink);font-weight:600}
 .top{display:flex;align-items:center;gap:11px;padding-block:24px 0}
 .wordmark{font-weight:900;font-size:20px;letter-spacing:3px;text-transform:uppercase}
 .hero{padding-block:clamp(30px,6vw,56px) clamp(30px,5vw,48px)}
-.hero h1{margin:0 0 22px;font-weight:900;font-size:clamp(35px,7.6vw,76px);line-height:.98;
-  letter-spacing:-2.4px;text-wrap:balance;max-width:17ch}
+/* the floor is 28px rather than 35px so "Performance measured," still holds
+   one line at 393px: the two-line call and response is the whole rhythm of
+   the headline, and it is lost the moment it breaks into four */
+.hero h1{margin:0 0 22px;font-weight:900;font-size:clamp(27px,7vw,76px);line-height:1.0;
+  /* tracking in em, not px: -2.4px is right at 76px and crushes the words
+     together at phone sizes. -0.032em is the same -2.43px on a desktop and
+     scales down with the type. */
+  letter-spacing:-0.032em;text-wrap:balance;max-width:17ch}
 .hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;
   background-clip:text;color:transparent}
 .cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:28px}
 .btn{display:inline-block;background:var(--grad);color:var(--on-go);text-decoration:none;
   font-weight:800;font-size:16px;padding:15px 26px;border-radius:12px;border:0;cursor:pointer}
-.btn.ghost{background:none;color:var(--go);box-shadow:inset 0 0 0 1.5px var(--go)}
 .note{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.3px}
 
-/* ---------------- the 15s chart ---------------- */
+/* ---------------- the 10s chart ---------------- */
 .stage{margin-top:clamp(26px,4vw,40px);background:var(--surface);border:1px solid var(--line);
   border-radius:18px;padding:clamp(14px,2.4vw,24px);overflow:hidden}
 .stage svg{display:block;width:100%;height:auto}
 .cap{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.4px;
   margin-top:10px;text-align:center}
 
-.film{animation:film 15s linear infinite}
-@keyframes film{0%{opacity:0}4%{opacity:1}93%{opacity:1}100%{opacity:0}}
+/* One shared 10s clock, down from 15s. The curves themselves now draw in 3.5s
+   instead of 7.05s -- that stretch was most of the sluggishness, since nothing
+   else can resolve until the lines arrive. Everything after it is pulled in to
+   match, leaving ~3.9s holding the finished chart before the loop restarts. */
+.film{animation:film 10s linear infinite}
+@keyframes film{0%{opacity:0}3%{opacity:1}94%{opacity:1}100%{opacity:0}}
 
-.gridln{stroke:var(--line);stroke-width:1;opacity:0;animation:gin 15s linear infinite}
-@keyframes gin{0%{opacity:0}6%{opacity:1}100%{opacity:1}}
+.gridln{stroke:var(--line);stroke-width:1;opacity:0;animation:gin 10s linear infinite}
+@keyframes gin{0%{opacity:0}5%{opacity:1}100%{opacity:1}}
 .axtx{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-3);
-  opacity:0;animation:gin 15s linear infinite}
+  opacity:0;animation:gin 10s linear infinite}
 
 .ln{fill:none;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;
   stroke-dasharray:1;stroke-dashoffset:1}
-.ln-dull{stroke:var(--dull);animation:draw 15s linear infinite}
-.ln-go{stroke:url(#lg);stroke-width:4.2;animation:draw 15s cubic-bezier(.62,0,.78,.52) infinite}
-@keyframes draw{0%,11%{stroke-dashoffset:1}58%,100%{stroke-dashoffset:0}}
+.ln-dull{stroke:var(--dull);animation:draw 10s linear infinite}
+/* ease-in on the accent line only: it starts with the dull one and pulls away,
+   which is the entire argument of the graphic */
+.ln-go{stroke:url(#lg);stroke-width:4.2;animation:draw 10s cubic-bezier(.62,0,.78,.52) infinite}
+@keyframes draw{0%,5%{stroke-dashoffset:1}40%,100%{stroke-dashoffset:0}}
 
-.fillgo{opacity:0;animation:fin 15s linear infinite}
-@keyframes fin{0%,40%{opacity:0}62%{opacity:1}100%{opacity:1}}
+.fillgo{opacity:0;animation:fin 10s linear infinite}
+@keyframes fin{0%,26%{opacity:0}44%{opacity:1}100%{opacity:1}}
 
-.tip{opacity:0;animation:tipin 15s linear infinite}
-@keyframes tipin{0%,56%{opacity:0}60%{opacity:1}100%{opacity:1}}
-.tipring{transform-origin:700px 49px;animation:ring 2.4s ease-out infinite;
-  animation-delay:8.6s}
+.tip{opacity:0;animation:tipin 10s linear infinite}
+@keyframes tipin{0%,38%{opacity:0}43%{opacity:1}100%{opacity:1}}
+/* 2.5s divides 10s exactly, so the pulse stays in phase with the loop instead
+   of drifting against it the way a 2.4s ring did against 15s */
+.tipring{transform-origin:700px 49px;animation:ring 2.5s ease-out infinite;
+  animation-delay:4.3s}
 @keyframes ring{0%{transform:scale(.4);opacity:.9}70%,100%{transform:scale(2.6);opacity:0}}
 
 .bracket{stroke:var(--ink-3);stroke-width:1.4;fill:none;opacity:0;
-  animation:bin 15s linear infinite}
-@keyframes bin{0%,60%{opacity:0}68%{opacity:1}100%{opacity:1}}
+  animation:bin 10s linear infinite}
+@keyframes bin{0%,42%{opacity:0}50%{opacity:1}100%{opacity:1}}
 .gaptx{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;
-  fill:var(--ink-2);opacity:0;animation:bin 15s linear infinite}
+  fill:var(--ink-2);opacity:0;animation:bin 10s linear infinite}
 
 .sertx{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;
-  opacity:0;animation:sin2 15s linear infinite}
-@keyframes sin2{0%,64%{opacity:0}74%{opacity:1}100%{opacity:1}}
+  opacity:0;animation:sin2 10s linear infinite}
+@keyframes sin2{0%,46%{opacity:0}55%{opacity:1}100%{opacity:1}}
 
 /* ---------------- phone + hype ---------------- */
-.show{display:grid;grid-template-columns:320px minmax(0,1fr);gap:clamp(26px,5vw,62px);
+.show{display:grid;grid-template-columns:340px minmax(0,1fr);gap:clamp(26px,5vw,62px);
   align-items:center}
 .phonewrap{display:flex;flex-direction:column;align-items:center;gap:16px}
-.phone{width:290px;aspect-ratio:430/932;border-radius:46px;padding:9px;background:#161616;
+/* The screen carries the app's real 393x852 aspect so the stage inside scales
+   to fill it exactly: --sw / 393 is the only magic number, and it is written
+   out below rather than computed, because calc() cannot divide two lengths
+   into the unitless factor scale() needs. */
+.phone{--sw:322px;width:calc(var(--sw) + 18px);border-radius:46px;padding:9px;background:#161616;
   box-shadow:0 0 0 2px #2E2E2E,0 0 0 3px #0C0C0C,0 46px 90px rgba(0,0,0,.72);
   position:relative;flex:none}
-.screen{width:100%;height:100%;border-radius:38px;overflow:hidden;position:relative;background:#000}
-.screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
-  animation:flip 13s linear infinite}
-@keyframes flip{0%{opacity:0}1.4%{opacity:1}18.6%{opacity:1}20%{opacity:0}100%{opacity:0}}
-.screen img:nth-child(1){animation-delay:0s}
-.screen img:nth-child(2){animation-delay:2.6s}
-.screen img:nth-child(3){animation-delay:5.2s}
-.screen img:nth-child(4){animation-delay:7.8s}
-.screen img:nth-child(5){animation-delay:10.4s}
+.screen{width:var(--sw);aspect-ratio:393/852;border-radius:38px;overflow:hidden;
+  position:relative;background:#000;isolation:isolate}
 .island{position:absolute;top:17px;left:50%;transform:translateX(-50%);width:86px;height:25px;
   border-radius:14px;background:#000;z-index:4}
-.caps{position:relative;height:22px;width:100%;max-width:290px}
-.caps span{position:absolute;inset:0;text-align:center;font-family:var(--mono);font-size:12px;
-  letter-spacing:.6px;color:var(--go);opacity:0;animation:flip 13s linear infinite}
-.caps span:nth-child(1){animation-delay:0s}
-.caps span:nth-child(2){animation-delay:2.6s}
-.caps span:nth-child(3){animation-delay:5.2s}
-.caps span:nth-child(4){animation-delay:7.8s}
-.caps span:nth-child(5){animation-delay:10.4s}
+
+/* ---------------- the live demo ---------------- */
+.dev{position:absolute;top:0;left:0;width:393px;height:852px;
+  transform:scale(.819338);transform-origin:top left;
+  background:var(--bg);overflow:hidden;
+  font-family:var(--display);-webkit-font-smoothing:antialiased;
+  /* a film, not a control: nothing in here takes a pointer, so a stray tap or
+     drag on the page cannot desync the sequence from what it is showing */
+  cursor:default;pointer-events:none;user-select:none;-webkit-user-select:none}
+@supports (zoom:1){.dev{transform:none;zoom:.819338}}
+.dv{position:absolute;inset:0;padding:52px 20px 18px;display:none;flex-direction:column}
+.dv.dv-on{display:flex}
+.dv-in{animation:dvin .34s cubic-bezier(.2,.7,.3,1) both}
+@keyframes dvin{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+
+/* nowrap + flex:none on both halves: if the webfont is still loading, the
+   fallback's wider metrics squeeze the flex line and the count gets clipped */
+.dtop{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:15px;letter-spacing:.8px;color:var(--ink-2);flex:none}
+/* padding-right because at fractional zoom the final glyph's ink reaches a
+   hair past its advance width and gets clipped at the box edge */
+.dtop>span{flex:none;white-space:nowrap;padding-right:3px}
+.dend{background:none;border:0;padding:0;font:inherit;letter-spacing:0;white-space:nowrap;flex:none;
+  font-family:var(--display);font-size:14.5px;font-weight:600;color:var(--warn);cursor:pointer}
+.dbar{display:flex;gap:7px;margin:14px 0 20px;flex:none}
+.dbar i{flex:1;height:4px;border-radius:2px;background:var(--sunk);transition:background .3s}
+.dbar i.on{background:var(--ink)}
+.dbar i.bad{background:var(--warn)}
+
+.dverdict{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:1.3px;
+  color:var(--warn);min-height:18px;flex:none}
+.dname{margin:2px 0 0;font-size:32px;font-weight:800;line-height:1.05;letter-spacing:-.6px;
+  text-transform:uppercase;color:var(--ink);flex:none}
+.dlvl{font-family:var(--mono);font-size:13.5px;line-height:1.45;color:var(--go);
+  margin-top:10px;flex:none}
+.dchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;flex:none}
+.dchips b{font-family:var(--mono);font-size:13.5px;font-weight:500;color:var(--go);
+  background:var(--go-soft);padding:8px 11px;border-radius:9px;white-space:nowrap}
+.dnext{font-family:var(--mono);font-size:12.5px;letter-spacing:1px;color:var(--ink-3);
+  margin-top:14px;flex:none}
+
+.dstdwrap{margin-top:16px;flex:0 1 auto;min-height:0;overflow:hidden;
+  max-height:0;opacity:0;transition:max-height .36s ease,opacity .26s ease}
+.dstdwrap.open{max-height:330px;opacity:1}
+.dstdhead{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:1.2px;
+  color:var(--warn);margin-bottom:10px}
+.dstd{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.dstd button{background:var(--surface-2);border:0;border-radius:12px;padding:15px 9px;
+  color:var(--ink);font-family:var(--display);font-size:15px;font-weight:700;line-height:1.15;
+  text-transform:uppercase;cursor:pointer;transition:background .18s,color .18s}
+.dstd button i{display:block;font-family:var(--mono);font-size:12px;font-weight:400;
+  font-style:normal;color:var(--ink-3);margin-top:3px;text-transform:none}
+.dstd button.on{background:var(--warn);color:var(--on-go)}
+.dstd button.on i{color:rgba(7,19,10,.72)}
+
+.dgrades{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto;
+  padding-top:16px;flex:none}
+.dg{border:0;border-radius:16px;padding:17px 10px;cursor:pointer;background:var(--surface-2);
+  display:flex;flex-direction:column;align-items:center;gap:3px;transition:background .2s,color .2s}
+.dg b{font-size:25px;font-weight:800;letter-spacing:-.4px;color:var(--ink-3)}
+.dg i{font-family:var(--mono);font-size:11.5px;font-style:normal;letter-spacing:.7px;
+  color:var(--ink-3);text-align:center;line-height:1.3}
+.dg.dgu.on{background:var(--warn)}
+.dg.dgu.on b,.dg.dgu.on i{color:var(--on-go)}
+.dg.dgs.on{background:var(--go)}
+.dg.dgs.on b,.dg.dgs.on i{color:var(--on-go)}
+
+.dfoot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;
+  font-size:14px;color:var(--go);flex:none}
+.dfoot .dim{color:var(--ink-3)}
+.dgo{background:none;border:1.5px solid var(--go);color:var(--go);border-radius:10px;
+  padding:9px 16px;font:inherit;font-weight:600;cursor:pointer}
+
+/* the debrief */
+#vDebrief{padding:52px 0 0}
+.dbbar{flex:none;display:flex;justify-content:space-between;align-items:center;
+  padding:0 20px 14px;font-family:var(--mono);font-size:14px;letter-spacing:1.4px;
+  color:var(--ink-2)}
+.dbfin{font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:0;
+  color:var(--warn)}
+.dbview{flex:1 1 auto;min-height:0;overflow:hidden;padding:0 16px}
+.dbscroll{transition:transform 3.2s cubic-bezier(.4,0,.5,1)}
+.dbscroll.up{transform:translateY(var(--pan,0px))}
+.dbcard{background:var(--surface);border-radius:18px 18px 0 0;padding:22px 18px 26px;
+  border-top:3px solid var(--go)}
+
+.dbtitle{font-size:27px;font-weight:800;line-height:1.08;letter-spacing:-.6px;color:var(--ink)}
+.dbmeta{font-family:var(--mono);font-size:12.5px;line-height:1.55;color:var(--ink-2);margin-top:9px}
+.dbhobbs{font-family:var(--mono);font-size:13px;color:var(--go);margin-top:5px}
+.dbrule{height:2px;background:var(--go);margin:14px 0 16px;border-radius:1px}
+
+.dbinst{background:var(--surface-2);border-radius:12px;padding:14px;
+  font-size:14.5px;line-height:1.45;color:var(--ink)}
+.dbik{font-family:var(--mono);font-size:12px;letter-spacing:1.3px;color:var(--ink-2);
+  margin-bottom:7px}
+
+.dbsec{font-size:20px;font-weight:800;letter-spacing:-.3px;color:var(--go);
+  margin:20px 0 0;padding-bottom:7px;border-bottom:2px solid var(--go)}
+.dbth{display:grid;grid-template-columns:1.25fr .62fr 1.5fr;gap:9px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-2);padding:11px 0 9px;
+  border-bottom:1px solid var(--line)}
+
+.dbrow{display:grid;grid-template-columns:1.25fr .62fr 1.5fr;gap:9px;align-items:start;
+  padding:13px 0;border-bottom:1px solid var(--line)}
+.dbrow .nm{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.25}
+.dbrow .vd{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.6px}
+.dbrow .ob{font-size:13.5px;line-height:1.4;color:var(--ink-2)}
+.dbrow.sat .vd{color:var(--go)}
+.dbrow.unsat .vd{color:var(--warn)}
+.dbrow.unsat .ob{color:var(--ink)}
+
+/* each row lands a beat after the one above it, so the scorecard reads as
+   something being assembled rather than a block that was already there */
+.dbrow,.dbinst,.dbsec,.dbth,.dbact{opacity:0;transform:translateY(9px)}
+#vDebrief.built .dbrow,#vDebrief.built .dbinst,#vDebrief.built .dbsec,
+#vDebrief.built .dbth,#vDebrief.built .dbact{
+  animation:dbland .42s cubic-bezier(.2,.75,.3,1) both}
+
+@keyframes dbland{to{opacity:1;transform:none}}
+
+.dbact{display:flex;gap:11px;align-items:flex-start;margin-top:14px;
+  font-size:14.5px;line-height:1.45;color:var(--ink)}
+.dbnum{flex:none;width:24px;height:24px;border-radius:50%;background:var(--warn-soft);
+  color:var(--warn);font-family:var(--mono);font-size:12.5px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;margin-top:1px}
+
+/* the ghost tap that shows what the autoplay is touching */
+.drip{position:absolute;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;
+  border:2px solid var(--ink);opacity:0;pointer-events:none;z-index:6}
+.drip.go{animation:drip .55s ease-out}
+@keyframes drip{0%{opacity:.85;transform:scale(.35)}100%{opacity:0;transform:scale(1.5)}}
+
+.caps{position:relative;width:100%;max-width:340px;display:flex;flex-direction:column;
+  align-items:center;gap:9px;text-align:center}
+.caps #dCap{font-family:var(--mono);font-size:12.5px;letter-spacing:.6px;color:var(--go)}
+.dverdict.ok{color:var(--go)}
 
 .beats{display:grid;gap:15px;margin-top:20px}
 .beat{display:flex;gap:13px;align-items:flex-start}
@@ -128,18 +266,6 @@ strong{color:var(--ink);font-weight:600}
   background:var(--go-soft);border-radius:6px;padding:5px 8px;flex:none;line-height:1}
 .beat .tx{flex:1 1 auto;min-width:0;font-size:15px;color:var(--ink-2)}
 .beat .tx b{color:var(--ink);font-weight:600;display:block}
-
-/* ---------------- the film ---------------- */
-.script{display:grid;gap:4px;margin-top:10px;max-width:760px}
-.sb{padding:14px 0 14px 18px;border-left:2px solid var(--line)}
-.sb.sam{border-left-color:var(--go)}
-.sb.tyler{border-left-color:#3A3A3A}
-.sb .vis{font-family:var(--mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:6px}
-.sb .vo{font-size:clamp(16px,2.1vw,18.5px);line-height:1.5;color:var(--ink-2);margin:0;max-width:62ch}
-.sb.sam .vo{color:var(--ink)}
-.sb.end{border-left-color:var(--go)}
-.sb.end .vo{font-weight:700;font-size:clamp(18px,2.6vw,23px);color:var(--ink)}
 
 /* ---------------- philosophy ---------------- */
 .creed{font-weight:800;font-size:clamp(26px,5.2vw,46px);line-height:1.08;letter-spacing:-1.2px;
@@ -150,12 +276,6 @@ strong{color:var(--ink);font-weight:600}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:18px}
 .card h3{margin:0 0 8px;font-weight:700;font-size:16.5px;line-height:1.25}
 .card p{margin:0;font-size:14.5px}
-
-.slot{border:1.5px dashed var(--warn-line);border-radius:12px;padding:16px 18px;
-  background:rgba(42,21,7,.22);max-width:460px}
-.slot .tag{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:1px;
-  color:var(--warn);text-transform:uppercase;display:block;margin-bottom:7px}
-.slot p{margin:0;font-size:14.5px;color:var(--ink-3)}
 
 footer{padding-block:34px 46px;border-top:1px solid var(--line);
   font-family:var(--mono);font-size:11.5px;color:var(--ink-3);line-height:1.7}
@@ -188,10 +308,9 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
 
   <!-- ============================ HERO ============================ -->
   <section class="hero">
-    <h1>Two students. Same airplane.<br><em>One of them knows where he stands.</em></h1>
-    <p class="lead">Measure a student's performance and it improves. Write it down and hand it
-      to them, and the improvement compounds. That isn't a theory I read — it's what happens
-      on my schedule, every week.</p>
+    <h1>Performance measured,<br><em>Performance improved.</em></h1>
+    <p class="lead">Write it down and hand it to the student, and the improvement compounds.
+      That isn't a theory I read &mdash; it's what happens on my schedule, every week.</p>
 
     <div class="stage">
       <svg viewBox="0 0 832 400" role="img"
@@ -244,8 +363,9 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
     </div>
 
     <div class="cta">
-      <a class="btn" href="#get">Get early access</a>
-      <a class="btn ghost" href="#film">Watch the two instructors</a>
+      <!-- href="#" is a placeholder: the Early access section this used to jump
+           to is gone, so this needs a real destination before launch -->
+      <a class="btn" href="#">Get early access</a>
     </div>
     <p class="note" style="margin-top:18px">Free for instructors &middot; Works with no signal &middot;
       Private, Instrument, Commercial, IPC, Flight Review, CFI, CFII</p>
@@ -258,19 +378,91 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
         <div class="phone">
           <div class="island"></div>
           <div class="screen">
-            <img src="screen1.jpg" alt="Debrief home screen">
-            <img src="screen2.jpg" alt="Choosing the maneuvers for the lesson">
-            <img src="screen3.jpg" alt="Grading a maneuver with two large buttons">
-            <img src="screen4.jpg" alt="Marking which standard was not met">
-            <img src="screen5.jpg" alt="The generated student debrief">
+            <!-- The stage is built at the app's real 393x852 and scaled down to
+                 fit, so every size in here is the pixel value the app actually
+                 uses rather than a guess that happens to look close. -->
+            <div class="dev" id="dev" role="application"
+                 aria-label="Interactive demonstration of grading a maneuver in Debrief">
+
+              <!-- ---------------- grading ---------------- -->
+              <div class="dv dv-on" id="vGrade">
+                <div class="dtop">
+                  <span id="dCount">MANEUVER 1 OF 3</span>
+                  <button class="dend" id="dEnd">End &amp; close out</button>
+                </div>
+                <div class="dbar" id="dBar"></div>
+
+                <div class="dverdict" id="dVerdict"></div>
+                <h3 class="dname" id="dName"></h3>
+                <div class="dlvl" id="dLvl"></div>
+                <div class="dchips" id="dChips"></div>
+                <div class="dnext" id="dNextUp"></div>
+
+                <div class="dstdwrap" id="dStdWrap">
+                  <div class="dstdhead">STANDARDS NOT MET &middot; TAP ALL THAT APPLY</div>
+                  <div class="dstd" id="dStd"></div>
+                </div>
+
+                <div class="dgrades">
+                  <button class="dg dgu" id="dUnsat">
+                    <b>UNSAT</b><i id="dUnsatSub">NO STANDARDS RECORDED</i></button>
+                  <button class="dg dgs" id="dSat">
+                    <b>SAT</b><i>TAP TO GRADE</i></button>
+                </div>
+
+                <div class="dfoot">
+                  <span class="dim">&lsaquo; Previous</span>
+                  <span class="dim">Add note</span>
+                  <button class="dgo" id="dGo">Next &rsaquo;</button>
+                </div>
+              </div>
+
+              <!-- ---------------- the debrief ----------------
+                   Laid out like the real generated debrief: header, instructor
+                   note, the scorecard table, then the action for next lesson.
+                   It is taller than the screen on purpose, and dbScroll is
+                   translated upward once the rows have landed, so the film gets
+                   to show the whole scorecard instead of its first few rows. -->
+              <div class="dv" id="vDebrief">
+                <div class="dbbar">
+                  <span>&lsaquo;&nbsp;&nbsp;DEBRIEF</span><span class="dbfin">Finish</span>
+                </div>
+                <div class="dbview">
+                  <div class="dbscroll" id="dbScroll">
+                    <div class="dbcard">
+                      <div class="dbtitle">FLIGHT DEBRIEF &middot;<br>BRANDT JENSEN</div>
+                      <div class="dbmeta">10 Nov 2026 &middot; C172S N7214G &middot; Private Pilot
+                        &mdash; Airplane</div>
+                      <div class="dbhobbs">1.5 Hobbs &middot; 1.5 total instruction</div>
+                      <div class="dbrule"></div>
+
+                      <div class="dbinst" id="dbInst">
+                        <div class="dbik">FROM YOUR INSTRUCTOR</div>
+                        Good energy management throughout. Soft field is the one to re-fly.
+                      </div>
+
+                      <div class="dbsec" id="dbSec">SCORECARD</div>
+                      <div class="dbth"><span>Maneuver</span><span>Result</span><span>What was observed</span></div>
+                      <div id="dbList"></div>
+
+                      <div class="dbsec" id="dbSec2">BEFORE THE NEXT LESSON</div>
+                      <div class="dbact" id="dbAct">
+                        <span class="dbnum">1</span>
+                        <span>Re-fly Soft-Field Approach &amp; Landing &mdash; focus on sink
+                          rate at touchdown.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <span class="drip" id="dRip"></span>
+            </div>
           </div>
         </div>
+
         <div class="caps">
-          <span>ON THE RAMP</span>
-          <span>QUEUE THE LESSON</span>
-          <span>IN THE AIR &middot; TWO TAPS</span>
-          <span>WHICH STANDARD</span>
-          <span>BEFORE THE PROP STOPS</span>
+          <span id="dCap">GRADING IN THE AIR</span>
         </div>
       </div>
 
@@ -294,74 +486,20 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
     </div>
   </section>
 
-  <!-- ============================ THE RED MARK ============================ -->
-  <section>
-    <div class="eyebrow">Why they scroll to the bottom first</div>
-    <h2>Students go straight to the orange.</h2>
-    <p>Every one of mine does it. They open the debrief and look for what they didn't meet,
-      before they read anything they did. It looks like the red pen on a graded test, and it
-      works for the same reason.</p>
-    <p><strong>"Satisfactory" carries almost no information.</strong> They already suspected it
-      went fine. The one line that says <em>altitude, below the final approach fix</em> is the
-      only part of the page telling them something they didn't know walking off the ramp. So
-      that's the part they want, and a debrief that buries it is a debrief nobody reads twice.</p>
-    <p>Which is why the app makes the unsatisfactory grade the easiest thing to record and the
-      most legible thing on the page. Not to be harsh &mdash; because it's the part with the
-      information in it.</p>
-  </section>
-
-  <!-- ============================ THE FILM ============================ -->
-  <section id="film">
-    <div class="eyebrow">Two instructors &middot; 75 seconds</div>
-    <h2>Same airport. Same airplanes. Same students walking through the door.</h2>
-    <div class="script">
-      <div class="sb tyler">
-        <div class="vis">Dawn. Two trainers tied down side by side on a quiet ramp.</div>
-        <p class="vo">Two instructors. Same airport. Same airplanes. Same students walking
-          through the door.</p>
-      </div>
-      <div class="sb tyler">
-        <div class="vis">Tyler checks his watch, then the schedule board, packed edge to edge.</div>
-        <p class="vo">Tyler wants hours, and he wants them fast. He shows up right on time, flies
-          the lesson, and writes the same line he wrote yesterday. &ldquo;Satisfactory progress.&rdquo;</p>
-      </div>
-      <div class="sb tyler">
-        <div class="vis">A student in the parking lot, staring at a blank logbook page.</div>
-        <p class="vo">His student drives home remembering a feeling, but not a fix.</p>
-      </div>
-      <div class="sb sam">
-        <div class="vis">Sam in the right seat, turbulence bumping the cabin. One thumb taps a
-          large button: UNSAT. A second tap: Altitude.</div>
-        <p class="vo">Sam flies the same lesson. Two taps when something breaks. A quick note on
-          how far off it was.</p>
-      </div>
-      <div class="sb sam">
-        <div class="vis">Engine shutdown. A debrief appears on the student's phone before the
-          prop stops.</div>
-        <p class="vo">By the time the prop stops, his student is holding a debrief: what went
-          well, what broke, and what to work on next.</p>
-      </div>
-      <div class="sb sam">
-        <div class="vis">Montage. Students improving. Logbooks filling with real detail. Friends
-          signing up. A checkride passed.</div>
-        <p class="vo">Students who know where they stand learn faster. Students who learn faster
-          tell their friends.</p>
-      </div>
-      <div class="sb end">
-        <div class="vis">Years later. Sam in a jet cockpit. Tyler on the phone, asking for a
-          reference.</div>
-        <p class="vo">Hours come to every pilot eventually. A reputation has to be earned, one
-          honest debrief at a time.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- ============================ CREED ============================ -->
   <section>
     <div class="eyebrow">Why it's free</div>
     <p class="creed">Give more in value than <em>you take in payment.</em></p>
-    <p class="lead">The grading, the libraries, the debrief, the PDF &mdash; free, for as long as
-      you want it, with no account. I don't mind if you never pay me a dollar.</p>
+    <p class="lead">I didn't come to that as a pricing strategy. It's how I've worked for as
+      long as I can remember, and it has opened more doors for me than anything I ever did
+      on purpose.</p>
+    <p>This app came out of the same habit. The debriefs worth writing always took time
+      nobody was paying me for &mdash; so I built something that writes them before the prop
+      stops, and then gave it away. The part that makes your students better shouldn't be
+      the part I charge you for. If Debrief makes you a better instructor and you never send
+      me a dollar, it was still worth building.</p>
+    <p>The grading, the libraries, the debrief, the PDF &mdash; free, for as long as you want
+      it, with no account.</p>
     <p>What costs me money is keeping your records somewhere other than your phone, so that's
       the part that costs you money. Lose the phone, keep three years of student records.
       That's the deal, and it's the only thing behind a wall.</p>
@@ -379,20 +517,6 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
     </div>
   </section>
 
-  <!-- ============================ CTA ============================ -->
-  <section id="get">
-    <div class="eyebrow">Early access</div>
-    <h2>I'm looking for instructors who'll fly it and tell me where it's wrong.</h2>
-    <p class="lead">It already works. It's been graded in turbulence, on real lessons, with real
-      students. What it hasn't had is a second instructor's opinion.</p>
-    <div class="cta"><a class="btn" href="#get">Request early access</a></div>
-    <div class="slot" style="margin-top:20px">
-      <span class="tag">Wire this up before launch</span>
-      <p>Point the button at a real contact &mdash; an address on this domain, or a short form.
-        Until then it goes nowhere.</p>
-    </div>
-  </section>
-
   <footer>
     Debrief is a training record, not a certification result. Tolerances are drawn from the FAA
     Airman Certification Standards and Practical Test Standards for each certificate.<br>
@@ -400,5 +524,226 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
   </footer>
 
 </div>
+
+<script>
+/* The phone demo.
+   Autoplay drives the SAME handlers a finger would, so a visitor who taps
+   mid-sequence just takes the controls -- there is no separate "interactive
+   mode" to switch into, and no way for the two to disagree about state.
+   Every maneuver name, tolerance and standard below was read out of the app
+   itself (Private Pilot, lesson 34, "Landings to ACS"); none of it is invented. */
+(function () {
+  var $ = function (i) { return document.getElementById(i); };
+  var dev = $("dev");
+  if (!dev) return;
+
+  var LVL = "ACS STANDARD · unprompted · to the limit below";
+  /* All five maneuvers of the lesson, so the scorecard the film ends on is the
+     one the app really generates rather than an abbreviated stand-in. */
+  var M = [
+    { n: "Normal Approach & Landing",
+      t: ["1.3 Vso +10/−5", "≤400 ft beyond point"],
+      s: [["Touchdown point", "≤400 ft beyond point"], ["Approach speed", ""],
+          ["Centerline", ""], ["Flare timing", ""], ["Crosswind correction", ""],
+          ["Procedure", ""], ["Safety or clearing", ""]] },
+    { n: "Soft-Field Approach & Landing",
+      t: ["1.3 Vso +10/−5"],
+      s: [["Sink rate at touchdown", ""], ["Nosewheel", ""], ["Power management", ""],
+          ["Approach speed", ""], ["Procedure", ""], ["Safety or clearing", ""]] },
+    { n: "Short-Field Approach & Landing",
+      t: ["1.3 Vso +10/−5", "≤200 ft beyond point"],
+      s: [["Touchdown point", "≤200 ft beyond point"], ["Approach speed", ""],
+          ["Stabilization", ""], ["Braking", ""], ["Procedure", ""], ["Safety or clearing", ""]] },
+    { n: "Forward Slip to a Landing",
+      t: ["≤400 ft beyond point"],
+      s: [["Slip technique", ""], ["Airspeed control", ""], ["Runway alignment", ""],
+          ["Recovery timing", ""], ["Touchdown point", "≤400 ft beyond point"],
+          ["Procedure", ""], ["Safety or clearing", ""]] },
+    { n: "Go-Around / Rejected Landing",
+      t: ["Vx / Vy +10/−5"],
+      s: [["Decision timing", ""], ["Power and pitch", ""], ["Configuration sequence", ""],
+          ["Runway offset", ""], ["Procedure", ""], ["Safety or clearing", ""]] }
+  ];
+  var N = M.length;
+
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+  var st, timers = [];
+  function fresh() {
+    var g = [], miss = [], k;
+    for (k = 0; k < N; k++) { g.push(null); miss.push([]); }
+    return { i: 0, g: g, miss: miss, view: "grade" };
+  }
+  function clearTimers() { while (timers.length) clearTimeout(timers.pop()); }
+
+  /* ---- where to put the ghost tap ----
+     .dev is CSS-scaled, so getBoundingClientRect would hand back screen pixels.
+     offsetLeft/offsetTop walk the box tree in the UNSCALED 393x852 space the
+     ripple is positioned in, which is the space we actually want. */
+  function centre(el) {
+    var x = 0, y = 0, n = el;
+    while (n && n !== dev) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; }
+    return [x + el.offsetWidth / 2, y + el.offsetHeight / 2];
+  }
+  function ghost(el) {
+    if (!el) return;
+    var c = centre(el), r = $("dRip");
+    r.style.left = c[0] + "px"; r.style.top = c[1] + "px";
+    r.className = "drip"; void r.offsetWidth; r.className = "drip go";
+  }
+
+  /* ---------------- the handlers ---------------- */
+  function grade(v) {
+    st.g[st.i] = v;
+    if (v === "sat") st.miss[st.i] = [];
+    render();
+  }
+  function toggleStd(k) {
+    var a = st.miss[st.i], p = a.indexOf(k);
+    if (p < 0) a.push(k); else a.splice(p, 1);
+    render();
+  }
+  function next() {
+    if (st.i < M.length - 1) { st.i++; render(); } else closeOut();
+  }
+  function closeOut() { st.view = "debrief"; render(); }
+  function reset() { st = fresh(); render(); play(); }
+
+  /* ---------------- painting ---------------- */
+  function render() {
+    if (st.view === "debrief") return paintDebrief();
+
+    $("vDebrief").className = "dv";
+    $("vGrade").className = "dv dv-on";
+
+    var m = M[st.i], g = st.g[st.i], miss = st.miss[st.i];
+
+    $("dCount").textContent = "MANEUVER " + (st.i + 1) + " OF " + M.length;
+
+    var bar = "";
+    for (var k = 0; k < M.length; k++) {
+      bar += '<i class="' + (st.g[k] === "sat" ? "on" : st.g[k] === "unsat" ? "bad" : "") + '"></i>';
+    }
+    $("dBar").innerHTML = bar;
+
+    var vd = $("dVerdict");
+    vd.textContent = g === "unsat" ? "UNSATISFACTORY" : g === "sat" ? "SATISFACTORY" : "";
+    vd.className = "dverdict" + (g === "sat" ? " ok" : "");
+
+    $("dName").textContent = m.n;
+    $("dLvl").textContent = LVL;
+    $("dChips").innerHTML = m.t.map(function (c) { return "<b>" + esc(c) + "</b>"; }).join("");
+    $("dNextUp").textContent = st.i < M.length - 1
+      ? "NEXT UP · " + M[st.i + 1].n.toUpperCase()
+      : "LAST MANEUVER · THEN CLOSE OUT";
+
+    $("dStd").innerHTML = m.s.map(function (s, ix) {
+      return '<button data-k="' + ix + '" class="' + (miss.indexOf(ix) >= 0 ? "on" : "") + '">'
+           + esc(s[0]) + (s[1] ? "<i>" + esc(s[1]) + "</i>" : "") + "</button>";
+    }).join("");
+    $("dStdWrap").className = "dstdwrap" + (g === "unsat" ? " open" : "");
+
+    $("dUnsat").className = "dg dgu" + (g === "unsat" ? " on" : "");
+    $("dSat").className = "dg dgs" + (g === "sat" ? " on" : "");
+    $("dUnsatSub").textContent = !miss.length ? "NO STANDARDS RECORDED"
+      : miss.length + (miss.length === 1 ? " STANDARD" : " STANDARDS");
+
+    $("dCap").textContent = g === "unsat" && !miss.length ? "WHICH STANDARD?"
+      : "TWO TAPS, IN THE AIR";
+  }
+
+  function paintDebrief() {
+    $("vGrade").className = "dv";
+    var v = $("vDebrief"), scroll = $("dbScroll");
+
+    /* reset the pan before measuring, or the second loop measures a card that
+       is still translated from the first */
+    scroll.className = "dbscroll";
+    scroll.style.setProperty("--pan", "0px");
+
+    $("dbList").innerHTML = M.map(function (m, k) {
+      var g = st.g[k] || "sat";
+      var obs = st.miss[k].length
+        ? "Standards not met: " + st.miss[k].map(function (ix) {
+            return esc(m.s[ix][0]) + (m.s[ix][1] ? " · limit: " + esc(m.s[ix][1]) : "");
+          }).join("; ")
+        : "inside tolerance";
+      return '<div class="dbrow ' + g + '">'
+           + '<span class="nm">' + esc(m.n) + "</span>"
+           + '<span class="vd">' + (g === "sat" ? "SAT" : "UNSAT") + "</span>"
+           + '<span class="ob">' + obs + "</span></div>";
+    }).join("");
+
+    v.className = "dv dv-on dv-in";
+
+    /* stagger every block so the scorecard assembles a row at a time */
+    var parts = v.querySelectorAll(".dbinst,.dbsec,.dbth,.dbrow,.dbact");
+    for (var k = 0; k < parts.length; k++) {
+      parts[k].style.animationDelay = (120 + k * 115) + "ms";
+    }
+    void v.offsetWidth;          /* restart the animations on every loop */
+    v.classList.add("built");
+
+    /* once it has assembled, pan the card up far enough to show the end of it.
+       Measured rather than hard-coded: the card's height depends on how many
+       rows wrapped to two lines, which depends on the font that loaded. */
+    timers.push(setTimeout(function () {
+      var over = scroll.scrollHeight - v.querySelector(".dbview").clientHeight;
+      scroll.style.setProperty("--pan", (over > 0 ? -over : 0) + "px");
+      scroll.className = "dbscroll up";
+    }, 120 + parts.length * 115 + 500));
+
+    $("dCap").textContent = "BEFORE THE PROP STOPS";
+  }
+
+  /* ---------------- autoplay ----------------
+     Five maneuvers, graded quickly, so the film spends its back half on the
+     debrief -- which is the thing worth showing. */
+  var SCRIPT = [
+    [1300, function () { ghost($("dSat"));   grade("sat"); }],
+    [ 800, function () { ghost($("dGo"));    next(); }],
+    [1200, function () { ghost($("dUnsat")); grade("unsat"); }],
+    [1300, function () { ghost($("dStd").firstChild); toggleStd(0); }],
+    [1300, function () { ghost($("dGo"));    next(); }],
+    [ 950, function () { ghost($("dSat"));   grade("sat"); }],
+    [ 750, function () { ghost($("dGo"));    next(); }],
+    [ 950, function () { ghost($("dSat"));   grade("sat"); }],
+    [ 750, function () { ghost($("dGo"));    next(); }],
+    [ 950, function () { ghost($("dSat"));   grade("sat"); }],
+    [1050, function () { ghost($("dEnd"));   closeOut(); }],
+    [6200, function () { reset(); }]
+  ];
+  function play() {
+    clearTimers();
+    var t = 0;
+    SCRIPT.forEach(function (step) {
+      t += step[0];
+      timers.push(setTimeout(step[1], t));
+    });
+  }
+
+  /* ---------------- start ---------------- */
+  st = fresh();
+  render();
+
+  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (calm) {
+    /* No looping animation: land on the single frame that carries the whole
+       argument and leave it there. */
+    st.i = 1; st.g[0] = "sat"; st.g[1] = "unsat"; st.miss[1] = [0];
+    render();
+  } else {
+    /* Don't burn the loop while it is scrolled out of view. */
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) { if (!timers.length) play(); }
+          else clearTimers();
+        });
+      }, { threshold: .25 }).observe(dev);
+    } else { play(); }
+  }
+})();
+</script>
 
 </body></html>
