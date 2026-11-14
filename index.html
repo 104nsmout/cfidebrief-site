@@ -16,6 +16,9 @@
   --warn:#FF8A3D; --warn-soft:#2A1507; --warn-line:#4A2A12;
   --dull:#5A5F55;
   --topo:#191919;
+  /* flight-director magenta: the colour a glass panel uses for 'where you are
+     being told to go'. Used only for targets and guidance, never decoration. */
+  --fd:#E85CFF; --fd-soft:rgba(232,92,255,.14);
   --display:'Archivo',system-ui,-apple-system,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
   color-scheme:dark;
@@ -32,7 +35,19 @@ body{margin:0;background:var(--bg);color:var(--ink);
   padding-left:max(20px,env(safe-area-inset-left,0px));
   padding-right:max(20px,env(safe-area-inset-right,0px))}
 section{padding-block:clamp(50px,8vw,92px)}
+section{position:relative}
 section+section{border-top:1px solid var(--line)}
+/* heading-tape divider: tick marks fading out either side of a magenta bug */
+section+section::before{content:"";position:absolute;top:-1px;left:50%;width:min(300px,70%);height:9px;
+  transform:translateX(-50%);
+  background:repeating-linear-gradient(90deg,#4a4a4a 0 1px,transparent 1px 12px);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 35%,#000 65%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 35%,#000 65%,transparent)}
+section+section::after{content:"";position:absolute;top:-1px;left:50%;width:16px;height:9px;
+  transform:translateX(-50%);background:var(--fd);
+  clip-path:polygon(0 0,100% 0,100% 100%,72% 100%,50% 45%,28% 100%,0 100%)}
+::selection{background:var(--fd);color:#000}
+.eyebrow::before{content:"\2192\00a0";color:var(--fd)}
 .eyebrow{font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:1.6px;
   color:var(--go);text-transform:uppercase;margin-bottom:15px}
 h2{margin:0 0 16px;font-weight:800;font-size:clamp(26px,5vw,40px);line-height:1.06;
@@ -43,8 +58,71 @@ strong{color:var(--ink);font-weight:600}
 
 /* ---------------- masthead + hero ---------------- */
 .top{display:flex;align-items:center;gap:11px;padding-block:24px 0}
+/* account links: quiet text link + small primary pill */
+.nav{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,3vw,22px)}
+.nav .login{color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14.5px;padding:8px 2px;white-space:nowrap;transition:color .15s ease}
+.nav .login:hover,.nav .login:focus-visible{color:var(--fd)}
+.nav .start{background:var(--grad);color:var(--on-go);text-decoration:none;font-weight:700;font-size:14.5px;
+  padding:9px 16px;border-radius:999px;white-space:nowrap;transition:transform .18s ease,box-shadow .18s ease}
+.nav .start:hover{transform:translateY(-1px);box-shadow:0 0 0 1px rgba(199,255,76,.4),0 10px 26px -10px rgba(182,243,74,.7)}
+.nav a:focus-visible{outline:2px solid var(--fd);outline-offset:3px;border-radius:999px}
+@media (max-width:480px){.nav .about{display:none}}
+footer a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line)}
+footer a:hover,footer a:focus-visible{color:var(--fd);border-color:var(--fd)}
+.top .home{display:flex;align-items:center;gap:11px;color:inherit;text-decoration:none}
+.about-body{max-width:62ch}
+.about-body p{font-size:17px;line-height:1.65}
+.sig{font-family:var(--mono);font-size:12.5px;letter-spacing:.6px;color:var(--ink-2);margin-top:26px}
+.sig b{color:var(--ink);font-weight:600}
+/* ---- shared by about.html and login.html ---- */
+@media (max-width:480px){.nav .mh{display:none}}
+.about-grid{display:grid;grid-template-columns:minmax(0,1fr) min(340px,34%);gap:clamp(28px,5vw,64px);align-items:start}
+.portrait{position:sticky;top:28px;margin:6px 0 0}
+.portrait img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:16px;border:1px solid var(--line)}
+.portrait::before{content:"";position:absolute;top:-1px;left:22px;width:34px;height:2px;background:var(--fd);border-radius:1px;z-index:1}
+.portrait figcaption{font-family:var(--mono);font-size:11.5px;letter-spacing:.8px;color:var(--ink-3);margin-top:12px}
+.about-body h2{font-size:clamp(20px,3vw,25px);margin:38px 0 12px;letter-spacing:-.4px}
+.pull{margin:22px 0;padding:4px 0 4px 20px;border-left:2px solid var(--fd)}
+.pull p{font-size:clamp(18px,2.3vw,21px);line-height:1.45;color:var(--ink);font-weight:600;margin:0 0 10px;letter-spacing:-.2px}
+.pull cite{display:block;font-style:normal;font-family:var(--mono);font-size:11.5px;letter-spacing:.3px;color:var(--ink-3);line-height:1.6}
+@media (max-width:760px){.about-grid{grid-template-columns:1fr}.portrait{position:relative;top:0;order:-1;max-width:260px}}
+/* log in */
+.auth{max-width:420px;margin:clamp(36px,7vw,72px) auto 0}
+.auth h1{font-weight:800;font-size:clamp(28px,5vw,38px);letter-spacing:-1px;line-height:1.08;margin:0 0 10px}
+.auth .sub{color:var(--ink-2);margin:0 0 24px;min-height:3.2em}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:22px}
+.seg button{font:inherit;font-weight:700;font-size:15px;padding:11px 8px;border:0;border-radius:9px;background:transparent;color:var(--ink-2);cursor:pointer;transition:background .15s ease,color .15s ease}
+.seg button[aria-selected="true"]{background:var(--grad);color:var(--on-go)}
+.seg button:focus-visible,.auth input:focus-visible,.auth .go:focus-visible{outline:2px solid var(--fd);outline-offset:2px}
+.auth label{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-2);margin:16px 0 7px}
+.auth input{width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:var(--ink);background:#0b0b0b;border:1px solid var(--line);border-radius:10px;padding:13px 14px}
+.auth input:focus{border-color:var(--fd)}
+.auth .go{width:100%;margin-top:24px;font:inherit;font-weight:800;font-size:16.5px;padding:14px;border:0;border-radius:12px;background:var(--grad);color:var(--on-go);cursor:pointer}
+.auth .msg{margin-top:18px;padding:14px 16px;border:1px solid var(--fd);background:var(--fd-soft);border-radius:12px;font-size:14.5px;line-height:1.55;color:var(--ink)}
+.auth .msg a,.auth .alt a{color:var(--go)}
+.auth .alt{margin-top:22px;font-size:14.5px;color:var(--ink-2);text-align:center}
+@media (max-width:380px){.nav .login,.nav .start{font-size:13.5px}.nav .start{padding:8px 13px}}
 .wordmark{font-weight:900;font-size:20px;letter-spacing:3px;text-transform:uppercase}
-.hero{padding-block:clamp(30px,6vw,56px) clamp(30px,5vw,48px)}
+.hero{padding-block:clamp(30px,6vw,56px) clamp(30px,5vw,48px);isolation:isolate}
+/* a fragment of an attitude indicator behind the headline: roll arc, pitch
+   ladder, and the magenta command bars giving a gentle fly-up */
+/* pushed right only as far as the margin beside the column allows, so it can
+   never widen the page */
+.pfd{position:absolute;right:calc(-1 * min(210px, max(0px, (100vw - 1040px) / 2 - 20px)));top:-46px;width:min(600px,78vw);height:auto;z-index:-1;
+  pointer-events:none;
+  -webkit-mask-image:radial-gradient(closest-side,#000 45%,transparent 100%);
+  mask-image:radial-gradient(closest-side,#000 45%,transparent 100%)}
+.pfd .w{stroke:rgba(255,255,255,.13);stroke-width:1.6;fill:none;stroke-linecap:round}
+.pfd text{font-family:'IBM Plex Mono',monospace;font-size:13px;fill:rgba(255,255,255,.16)}
+.pfd .cmd{fill:var(--fd);opacity:.5;animation:cmd 7s ease-in-out infinite}
+@keyframes cmd{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+/* below this width the command bars would cross the paragraph, so only the
+   ladder stays */
+@media (max-width:1499px){.pfd .cmd{display:none}}
+@media (max-width:640px){.pfd{top:-20px;opacity:.5}}
+.stage .tgt{stroke:var(--fd);stroke-width:1.4;stroke-dasharray:5 6;opacity:0;animation:gin 10s linear infinite}
+.stage .bug{fill:var(--fd);opacity:0;animation:gin 10s linear infinite}
+.stage .axtx.mg{fill:var(--fd)}
 /* the floor is 28px rather than 35px so "Performance measured," still holds
    one line at 393px: the two-line call and response is the whole rhythm of
    the headline, and it is lost the moment it breaks into four */
@@ -56,6 +134,9 @@ strong{color:var(--ink);font-weight:600}
 .hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;
   background-clip:text;color:transparent}
 .cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:28px}
+.btn{transition:transform .18s ease,box-shadow .18s ease;
+  box-shadow:0 0 0 1px rgba(199,255,76,.25),0 10px 34px -10px rgba(182,243,74,.55)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(199,255,76,.4),0 16px 40px -10px rgba(182,243,74,.7)}
 .btn{display:inline-block;background:var(--grad);color:var(--on-go);text-decoration:none;
   font-weight:800;font-size:16px;padding:15px 26px;border-radius:12px;border:0;cursor:pointer}
 .note{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.3px}
@@ -111,7 +192,11 @@ strong{color:var(--ink);font-weight:600}
 /* ---------------- phone + hype ---------------- */
 .show{display:grid;grid-template-columns:340px minmax(0,1fr);gap:clamp(26px,5vw,62px);
   align-items:center}
-.phonewrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+.phonewrap{display:flex;flex-direction:column;align-items:center;gap:16px;position:relative}
+.phonewrap::before{content:"";position:absolute;inset:6% max(-14%,-16px) 10%;z-index:-1;pointer-events:none;
+  background:radial-gradient(50% 50% at 30% 35%,rgba(232,92,255,.20),transparent 70%),
+             radial-gradient(50% 50% at 72% 70%,rgba(182,243,74,.14),transparent 70%);
+  filter:blur(26px)}
 /* The screen carries the app's real 393x852 aspect so the stage inside scales
    to fill it exactly: --sw / 393 is the only magic number, and it is written
    out below rather than computed, because calc() cannot divide two lengths
@@ -273,7 +358,21 @@ strong{color:var(--ink);font-weight:600}
 .creed em{font-style:normal;background:var(--grad);-webkit-background-clip:text;
   background-clip:text;color:transparent}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:26px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:18px;
+  position:relative;transition:border-color .2s,transform .2s}
+.card:hover{border-color:#3d3d3d;transform:translateY(-2px)}
+/* selected-altitude style corner bug */
+.card::before{content:"";position:absolute;top:-1px;left:18px;width:26px;height:2px;background:var(--fd);border-radius:1px}
+/* scroll position as an altitude tape with a magenta bug */
+.tape{position:fixed;right:20px;top:50%;height:240px;width:14px;transform:translateY(-50%);z-index:3;
+  pointer-events:none;display:none;
+  background:repeating-linear-gradient(180deg,#3d3d3d 0 1px,transparent 1px 12px);
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 15%,#000 85%,transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 15%,#000 85%,transparent)}
+.tapebug{position:fixed;right:16px;top:calc(50% - 120px);width:22px;height:12px;z-index:3;pointer-events:none;
+  display:none;background:var(--fd);
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 72%,42% 50%,0 28%)}
+@media (min-width:1240px){.tape,.tapebug{display:block}}
 .card h3{margin:0 0 8px;font-weight:700;font-size:16.5px;line-height:1.25}
 .card p{margin:0;font-size:14.5px}
 
@@ -287,11 +386,7 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   .ln{stroke-dashoffset:0}
-  .film,.gridln,.axtx,.fillgo,.tip,.bracket,.gaptx,.sertx{opacity:1}
-  .screen img{opacity:0}
-  .screen img:nth-child(4){opacity:1}
-  .caps span{opacity:0}
-  .caps span:nth-child(4){opacity:1}
+  .film,.gridln,.axtx,.fillgo,.tip,.bracket,.gaptx,.sertx,.stage .tgt,.stage .bug{opacity:1}
 }
 </style>
 
@@ -304,10 +399,27 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
       <path d="M2 12h4l2.5-7 3.5 14 3-7h7"/>
     </svg>
     <span class="wordmark">Debrief</span>
+    <nav class="nav" aria-label="Account">
+      <a class="login about" href="about.html">About</a>
+      <a class="login" href="login.html">Log in</a>
+      <a class="start" href="https://debrief-app-nine.vercel.app/">Get started</a>
+    </nav>
   </div>
 
   <!-- ============================ HERO ============================ -->
   <section class="hero">
+    <svg class="pfd" viewBox="0 0 520 420" aria-hidden="true">
+      <path class="w" d="M96 178 A200 200 0 0 1 424 178"/>
+      <path class="w" d="M260 92 l-9 -15 h18 z"/>
+      <path class="w" d="M163 118 l-7 -12 M357 118 l7 -12 M207 97 l-3 -9 M313 97 l3 -9"/>
+      <path class="w" d="M30 250 H490"/>
+      <path class="w" d="M205 160 H315 M235 205 H285 M235 295 H285 M205 340 H315 M246 182 H274 M246 228 H274 M246 272 H274 M246 318 H274"/>
+      <text x="178" y="165">10</text><text x="324" y="165">10</text>
+      <text x="216" y="210">5</text><text x="292" y="210">5</text>
+      <text x="216" y="300">5</text><text x="292" y="300">5</text>
+      <text x="178" y="345">10</text><text x="324" y="345">10</text>
+      <g class="cmd"><path d="M260 236 L150 268 L188 270 Z"/><path d="M260 236 L370 268 L332 270 Z"/></g>
+    </svg>
     <h1>Performance measured,<br><em>Performance improved.</em></h1>
     <p class="lead">Write it down and hand it to the student, and the improvement compounds.
       That isn't a theory I read &mdash; it's what happens on my schedule, every week.</p>
@@ -333,7 +445,9 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
           <line class="gridln" x1="60" y1="320" x2="700" y2="320"/>
           <text class="axtx" x="60" y="344">LESSON 1</text>
           <text class="axtx" x="700" y="344" text-anchor="end">LESSON 12</text>
-          <text class="axtx" x="60" y="34" transform="rotate(0)">READY FOR THE CHECKRIDE</text>
+          <line class="tgt" x1="60" y1="40" x2="700" y2="40"/>
+          <path class="bug" d="M706 31 h13 v18 h-13 v-5 l6 -4 l-6 -4 z"/>
+          <text class="axtx mg" x="60" y="34">READY FOR THE CHECKRIDE</text>
 
           <path class="fillgo" fill="url(#fg)" stroke="none"
                 d="M60,320 L118,311 L176,303 L235,285 L293,268 L351,250 L409,224 L467,198
@@ -362,12 +476,7 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
       <div class="cap">Illustrative. The shape of it, not a measurement.</div>
     </div>
 
-    <div class="cta">
-      <!-- href="#" is a placeholder: the Early access section this used to jump
-           to is gone, so this needs a real destination before launch -->
-      <a class="btn" href="#">Get early access</a>
-    </div>
-    <p class="note" style="margin-top:18px">Free for instructors &middot; Works with no signal &middot;
+    <p class="note" style="margin-top:26px">Free for instructors &middot; Works with no signal &middot;
       Private, Instrument, Commercial, IPC, Flight Review, CFI, CFII</p>
   </section>
 
@@ -520,11 +629,23 @@ footer{padding-block:34px 46px;border-top:1px solid var(--line);
   <footer>
     Debrief is a training record, not a certification result. Tolerances are drawn from the FAA
     Airman Certification Standards and Practical Test Standards for each certificate.<br>
-    cfidebrief.com
+    <a href="about.html">About</a> &nbsp;&middot;&nbsp; <a href="login.html">Log in</a> &nbsp;&middot;&nbsp; cfidebrief.com
   </footer>
 
 </div>
 
+<div class="tape" aria-hidden="true"></div><div class="tapebug" id="tapeBug" aria-hidden="true"></div>
+<script>
+(function(){
+  var b=document.getElementById("tapeBug"); if(!b) return;
+  function put(){
+    var max=document.documentElement.scrollHeight-window.innerHeight;
+    var f=max>0?Math.min(1,Math.max(0,window.scrollY/max)):0;
+    b.style.transform="translateY("+(f*228)+"px)";
+  }
+  window.addEventListener("scroll",put,{passive:true}); window.addEventListener("resize",put); put();
+})();
+</script>
 <script>
 /* The phone demo.
    Autoplay drives the SAME handlers a finger would, so a visitor who taps
